@@ -31,6 +31,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
-  // return NextResponse.redirect(new URL("/auth/login?error=auth-failed", req.url));
-  return NextResponse.redirect(new URL("/dashboard", req.url));
+  return NextResponse.redirect(new URL("/auth/login?error=auth-failed", req.url));
+  // return NextResponse.redirect(new URL("/dashboard", req.url));
 }

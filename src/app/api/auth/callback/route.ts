@@ -1,36 +1,34 @@
-// app/api/auth/callback/route.ts
-import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { NextResponse } from "next/server";
+import { createClient } from "@/utils/supabase/server";
 
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
+export async function GET(request: Request) {
+  const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const error = searchParams.get("error");
+  const next = searchParams.get("next") ?? "/";
 
-  console.log("Full Callback URL:", req.url); // Debug
-  console.log("Code:", code); // Debug
-  console.log("Error:", error); // Debug
+  if (!code) {
+    console.error("No code provided in callback");
+    return NextResponse.redirect(`${origin}/error?message=no-code`);
+  }
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error) {
-    return NextResponse.redirect(
-      new URL(`/auth/login?error=${error}`, req.url)
-    );
+    console.error("Session exchange error:", error.message);
+    return NextResponse.redirect(`${origin}/error?message=auth-failed`);
   }
 
-  if (code) {
-    
-    const { data, error: sessionError } =
-      await supabase.auth.exchangeCodeForSession(code);
-    if (sessionError) {
-      console.error("Session Exchange Error:", sessionError.message);
-      return NextResponse.redirect(
-        new URL("/auth/login?error=session-failed", req.url)
-      );
-    }
-    console.log("Session Data:", data); // Debug successful session
-    return NextResponse.redirect(new URL("/dashboard", req.url));
-  }
+  console.log("Session established:", data.session);
 
-  return NextResponse.redirect(new URL("/auth/login?error=auth-failed", req.url));
-  // return NextResponse.redirect(new URL("/dashboard", req.url));
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const isLocalEnv = process.env.NODE_ENV === "development";
+
+  if (isLocalEnv) {
+    return NextResponse.redirect(`${origin}${next}`);
+  } else if (forwardedHost) {
+    return NextResponse.redirect(`https://${forwardedHost}${next}`);
+  } else {
+    return NextResponse.redirect(`${origin}${next}`);
+  }
 }

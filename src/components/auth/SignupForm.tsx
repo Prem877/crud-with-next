@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 
 import { supabase } from "@/utils/supabase/client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 //images
@@ -19,7 +19,7 @@ export default function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
-    const router = useRouter();
+    // const router = useRouter();
 
     const handleSignup = async (e: React.FormEvent) => {
         const origin = window.location.origin; // Dynamically gets the current domain

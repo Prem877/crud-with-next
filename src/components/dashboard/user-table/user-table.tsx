@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import {
-    ColumnDef,
+    // ColumnDef,
     ColumnFiltersState,
     SortingState,
     VisibilityState,

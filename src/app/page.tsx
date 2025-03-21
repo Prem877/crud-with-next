@@ -43,10 +43,10 @@ export default function Dashboard() {
     };
   }, [router]);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push("/auth/login");
-  };
+  // const handleLogout = async () => {
+  //   await supabase.auth.signOut();
+  //   router.push("/auth/login");
+  // };
 
   if (loading) {
     return <div>Loading...</div>;

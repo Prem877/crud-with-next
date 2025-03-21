@@ -7,8 +7,10 @@ import { useRouter } from "next/navigation";
 // import { Button } from "@/components/ui/button";
 import { SectionCards } from "@/components/dashboard/section-card";
 import { ChartAreaInteractive } from "@/components/dashboard/chart-area-interactive";
-import { DataTable } from "@/components/dashboard/data-table";
-import data from "@/components/dashboard/data.json"
+import { UserTable } from "@/components/dashboard/user-table/user-table";
+// import DemoTable from "@/components/dashboard/DemoTable";
+// import { DataTable } from "@/components/dashboard/data-table";
+// import data from "@/components/dashboard/data.json"
 
 export default function Dashboard() {
     const router = useRouter();
@@ -43,10 +45,10 @@ export default function Dashboard() {
         };
     }, [router]);
 
-    const handleLogout = async () => {
-        await supabase.auth.signOut();
-        router.push("/auth/login");
-    };
+    // const handleLogout = async () => {
+    //     await supabase.auth.signOut();
+    //     router.push("/auth/login");
+    // };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -66,7 +68,8 @@ export default function Dashboard() {
                     <div className="px-4 lg:px-6">
                         <ChartAreaInteractive />
                     </div>
-                    <DataTable data={data} />
+                    <UserTable />
+                    {/* <DataTable data={data} /> */}
                 </div>
             </div>
         </>

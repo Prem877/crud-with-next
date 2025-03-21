@@ -4,7 +4,11 @@
 import { supabase } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
+import { SectionCards } from "@/components/dashboard/section-card";
+import { ChartAreaInteractive } from "@/components/dashboard/chart-area-interactive";
+import { DataTable } from "@/components/dashboard/data-table";
+import data from "@/components/dashboard/data.json"
 
 export default function Dashboard() {
   const router = useRouter();
@@ -49,11 +53,22 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl font-bold">Welcome to Your Dashboard</h1>
-      <Button onClick={handleLogout} className="mt-4">
-        Logout
-      </Button>
-    </div>
+    <>
+      {/* <div className="max-w-md mx-auto mt-10">
+        <h1 className="text-2xl font-bold">Welcome to Your Dashboard</h1>
+        <Button onClick={handleLogout} className="mt-4">
+          Logout
+        </Button>
+      </div> */}
+      <div className="@container/main flex flex-1 flex-col gap-2">
+        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+          <SectionCards />
+          <div className="px-4 lg:px-6">
+            <ChartAreaInteractive />
+          </div>
+          <DataTable data={data} />
+        </div>
+      </div>
+    </>
   );
 }

@@ -3,6 +3,7 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { ModeToggle } from "./mode-toggle"
 import { ThemeSelector } from "./theme-selector"
+import Profile from "./profile"
 
 export function SiteHeader() {
     return (
@@ -27,6 +28,7 @@ export function SiteHeader() {
                     </Button>
                     <ThemeSelector />
                     <ModeToggle />
+                    <Profile />
                 </div>
             </div>
         </header>

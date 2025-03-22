@@ -87,7 +87,7 @@ export function UserTable() {
     });
 
     return (
-        <div className="w-full">
+        <div className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">
             <div className="flex items-center py-4">
                 <Input
                     placeholder="Filter emails..."

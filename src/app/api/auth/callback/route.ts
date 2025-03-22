@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
+import prisma from "@/lib/prisma";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -18,6 +19,19 @@ export async function GET(request: Request) {
     console.error("Session exchange error:", error.message);
     return NextResponse.redirect(`${origin}/error?message=auth-failed`);
   }
+
+  //external code for store user data in prisma db*********************************************
+  const user = data.session.user;
+  // Store in Prisma User table
+  await prisma.user.create({
+    data: {
+      id: user.id, // Supabase UUID
+      email: user.email || "unknown@example.com",
+      name: user.user_metadata?.name || user.email, // Optional: extract from metadata
+      userMetadata: user.user_metadata, // Directly from Supabase response
+    },
+  });
+  // /external code for store user data in prisma db*********************************************
 
   console.log("Session established:", data.session);
 

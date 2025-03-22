@@ -22,15 +22,28 @@ export async function GET(request: Request) {
 
   //external code for store user data in prisma db*********************************************
   const user = data.session.user;
-  // Store in Prisma User table
-  await prisma.user.create({
-    data: {
-      id: user.id, // Supabase UUID
-      email: user.email || "unknown@example.com",
-      name: user.user_metadata?.name || user.email, // Optional: extract from metadata
-      userMetadata: user.user_metadata, // Directly from Supabase response
+
+  // Check if user already exists
+  const existingUser = await prisma.user.findUnique({
+    where: {
+      id: user.id,
     },
   });
+
+  // Only create if user doesn't exist
+  if (!existingUser) {
+    await prisma.user.create({
+      data: {
+        id: user.id, // Supabase UUID
+        email: user.email || "unknown@example.com",
+        name: user.user_metadata?.name || user.email, // Optional: extract from metadata
+        userMetadata: user.user_metadata, // Directly from Supabase response
+      },
+    });
+    console.log(`New user created with id: ${user.id}`);
+  } else {
+    console.log(`User with id: ${user.id} already exists, skipping creation`);
+  }
   // /external code for store user data in prisma db*********************************************
 
   console.log("Session established:", data.session);

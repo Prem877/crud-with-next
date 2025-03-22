@@ -1,13 +1,31 @@
+// import { PrismaClient } from "@prisma/client";
+
+// declare global {
+//   var prisma: PrismaClient | undefined;
+// }
+
+// const prisma = global.prisma || new PrismaClient();
+
+// if (process.env.NODE_ENV !== "production") {
+//   global.prisma = prisma;
+// }
+
+// export default prisma;
+
 import { PrismaClient } from "@prisma/client";
 
-declare global {
-  var prisma: PrismaClient | undefined;
-}
+// Singleton function to initialize PrismaClient
+const getPrismaClient = (() => {
+  let instance: PrismaClient | undefined;
 
-const prisma = global.prisma || new PrismaClient();
+  return () => {
+    if (!instance) {
+      instance = new PrismaClient();
+    }
+    return instance;
+  };
+})();
 
-if (process.env.NODE_ENV !== "production") {
-  global.prisma = prisma;
-}
+const prisma = getPrismaClient();
 
 export default prisma;

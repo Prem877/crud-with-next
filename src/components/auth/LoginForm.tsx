@@ -8,10 +8,11 @@ import { Label } from "@/components/ui/label"
 import { supabase } from "@/utils/supabase/client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-//img
-import authImg from "@/assets/auth-img.jpg"
 import Image from "next/image"
 import Link from "next/link";
+
+//images
+import authImg from "@/assets/auth-img.jpg"
 
 export function LoginForm({
     className,

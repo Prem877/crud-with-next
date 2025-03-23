@@ -11,21 +11,28 @@
 // }
 
 // export default prisma;
+//******************************************************************* */
+
+// import { PrismaClient } from "@prisma/client";
+
+// // Singleton function to initialize PrismaClient
+// const getPrismaClient = (() => {
+//   let instance: PrismaClient | undefined;
+
+//   return () => {
+//     if (!instance) {
+//       instance = new PrismaClient();
+//     }
+//     return instance;
+//   };
+// })();
+
+// const prisma = getPrismaClient();
+
+// export default prisma;
 
 import { PrismaClient } from "@prisma/client";
 
-// Singleton function to initialize PrismaClient
-const getPrismaClient = (() => {
-  let instance: PrismaClient | undefined;
-
-  return () => {
-    if (!instance) {
-      instance = new PrismaClient();
-    }
-    return instance;
-  };
-})();
-
-const prisma = getPrismaClient();
+const prisma = new PrismaClient();
 
 export default prisma;

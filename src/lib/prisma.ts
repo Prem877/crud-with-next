@@ -38,6 +38,11 @@ const prismaClientSingleton = () => {
 };
 
 declare global {
+  namespace NodeJS {
+    interface Global {
+      prisma: undefined | ReturnType<typeof prismaClientSingleton>;
+    }
+  }
   var prisma: undefined | ReturnType<typeof prismaClientSingleton>;
 }
 

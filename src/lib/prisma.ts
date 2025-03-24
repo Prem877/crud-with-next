@@ -11,38 +11,3 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 export default prisma;
-//******************************************************************* */
-
-// import { PrismaClient } from "@prisma/client";
-
-// // Singleton function to initialize PrismaClient
-// const getPrismaClient = (() => {
-//   let instance: PrismaClient | undefined;
-
-//   return () => {
-//     if (!instance) {
-//       instance = new PrismaClient();
-//     }
-//     return instance;
-//   };
-// })();
-
-// const prisma = getPrismaClient();
-
-// export default prisma;
-
-// import { PrismaClient } from "@prisma/client";
-
-// const prismaClientSingleton = () => {
-//   return new PrismaClient();
-// };
-
-// declare global {
-//   var prisma: undefined | ReturnType<typeof prismaClientSingleton>;
-// }
-
-// const prisma = globalThis.prisma ?? prismaClientSingleton();
-
-// if (process.env.NODE_ENV !== "production") globalThis.prisma = prisma;
-
-// export default prisma;

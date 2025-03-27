@@ -24,7 +24,7 @@ export type User = {
     role: string;
 };
 
-const deleteUser = async (id: any) => {
+const deleteUser = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
 
     try {

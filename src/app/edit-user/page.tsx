@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
-import { Github, Twitter, Instagram, Linkedin, Globe } from 'lucide-react';
+import { Twitter, Instagram, Linkedin } from 'lucide-react';
 //img
 import userImg from '@/assets/user.jpg';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -80,7 +80,7 @@ export default function EditUser() {
 
         try {
             // Upload the file to Supabase Storage
-            const { data, error } = await supabase.storage
+            const { error } = await supabase.storage
                 .from('avatars') // Create a bucket named 'avatars' in Supabase Storage
                 .upload(fileName, file, {
                     upsert: true, // Overwrite if the file already exists

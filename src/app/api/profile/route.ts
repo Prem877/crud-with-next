@@ -9,7 +9,7 @@ import { supabase } from "@/utils/supabase/client";
 //   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 // );
 
-export async function GET(request: Request) {
+export async function GET() {
   const cookieStore = await cookies();
 
   // Get all cookies with the prefix 'sb-fpihvzfmvivmqaxicqur-auth-token'

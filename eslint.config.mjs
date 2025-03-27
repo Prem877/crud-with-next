@@ -16,7 +16,6 @@ const eslintConfig = [
       'no-var': 'off',
       'no-unused-vars': 'off',
       'no-explicit-any': 'off',
-
     }
   }),
 ]

@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: any } }
+  { params }: { params: { id: string } }
 ) {
   try {
     await prisma.user.delete({

@@ -10,6 +10,15 @@ import "@/styles/globals.css"
 import { cn } from "@/lib/utils"
 import { ActiveThemeProvider } from "@/components/theme-provider/active-theme"
 
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/dashboard/layouts/sidebar/app-sidebar"
+import { SiteHeader } from "@/components/dashboard/layouts/header/site-header"
+
+import "@/styles/dashboard.css"
+
 const META_THEME_COLORS = {
   light: "#ffffff",
   dark: "#09090b",
@@ -33,6 +42,8 @@ export default async function RootLayout({
   const cookieStore = await cookies()
   const activeThemeValue = cookieStore.get("active_theme")?.value
   const isScaled = activeThemeValue?.endsWith("-scaled")
+  //sidebar state
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -65,7 +76,20 @@ export default async function RootLayout({
           enableColorScheme
         >
           <ActiveThemeProvider initialTheme={activeThemeValue}>
-            {children}
+            <SidebarProvider
+              defaultOpen={defaultOpen}
+              style={
+                {
+                  "--sidebar-width": "calc(var(--spacing) * 72)",
+                } as React.CSSProperties
+              }
+            >
+              <AppSidebar variant="inset" />
+              <SidebarInset>
+                <SiteHeader />
+                <div className="flex flex-1 flex-col">{children}</div>
+              </SidebarInset>
+            </SidebarProvider>
             <Toaster position="top-center" richColors />
             {/* <Analytics /> */}
           </ActiveThemeProvider>

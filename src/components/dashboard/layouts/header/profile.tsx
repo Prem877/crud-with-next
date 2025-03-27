@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Profile = () => {
 
@@ -70,10 +71,10 @@ const Profile = () => {
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
-                            <a href="#">Settings</a>
+                            <Link href="#">Settings</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                            <a href="#">Profile Details</a>
+                            <Link href="/profile">Profile Details</Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={handleSignOut}>

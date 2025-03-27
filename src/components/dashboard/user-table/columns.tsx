@@ -43,6 +43,34 @@ const deleteUser = async (id: any) => {
     }
 };
 
+// Create a separate component for the Actions cell
+const ActionsCell: React.FC<{ userId: string }> = ({ userId }) => {
+    const router = useRouter(); // Now safe to use inside a React component
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                    <span className="sr-only">Open menu</span>
+                    <MoreHorizontal className="h-4 w-4" />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                    onClick={() => router.push(`/edit-user?id=${userId}`)}
+                >
+                    Edit
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => deleteUser(userId)}
+                >
+                    Delete
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    );
+};
+
 export const columns: ColumnDef<User>[] = [
     {
         id: 'select',
@@ -115,33 +143,7 @@ export const columns: ColumnDef<User>[] = [
     {
         id: 'actions',
         header: 'Actions',
-        cell: ({ row }) => {
-            const router = useRouter();
-            const userId = row.original.id;
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                            onClick={() => router.push(`/edit-user?id=${userId}`)}
-                        >
-                            Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                            onClick={() => deleteUser(userId)}
-                        >
-                            Delete
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        },
+        cell: ({ row }) => <ActionsCell userId={row.original.id} />,
         enableSorting: false,
         enableHiding: false,
     },

@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
-import { Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Twitter, Instagram, Linkedin, UserPen } from 'lucide-react';
 //img
 import userImg from '@/assets/user.jpg';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -75,8 +75,9 @@ export default function EditUser() {
         if (!file) return;
 
         setLoading(true);
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${userId}/avatar.${fileExt}`;
+        const fileExt = file.name.split('.').pop(); // Get the file extension (e.g., jpg, png)
+        const randomName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`; // Generate a random name
+        const fileName = `${userId}/${randomName}.${fileExt}`;
 
         try {
             // Upload the file to Supabase Storage
@@ -105,6 +106,7 @@ export default function EditUser() {
             console.error('Error uploading avatar:', error);
             alert('Failed to upload avatar');
         }
+        setLoading(false);
     };
 
     const handleSave = async () => {
@@ -176,7 +178,7 @@ export default function EditUser() {
                     </CardHeader>
                     <CardContent className="flex flex-col items-center">
 
-                        <div className="relative">
+                        {/* <div className="relative">
                             {
                                 !loading
                                     ?
@@ -204,6 +206,40 @@ export default function EditUser() {
                                     onChange={handleAvatarUpload}
                                 />
                             </div>
+                        </div> */}
+
+                        <div className="relative">
+                            {!loading ? (
+                                <div className="relative group">
+                                    <Image
+                                        src={userData.avatarUrl ? userData.avatarUrl : userImg}
+                                        alt="Avatar"
+                                        width={120}
+                                        height={120}
+                                        className="rounded-full"
+                                    />
+                                    <Label htmlFor="avatar-upload" className="cursor-pointer">
+                                        <div className="absolute inset-1 bottom-0 right-0 p-1">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="bg-gray-800 text-white rounded-full h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-gray-700"
+                                            >
+                                                <UserPen />
+                                            </Button>
+                                        </div>
+                                    </Label>
+                                </div>
+                            ) : (
+                                <Skeleton className="h-20 w-20 rounded-full" />
+                            )}
+                            <Input
+                                id="avatar-upload"
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={handleAvatarUpload}
+                            />
                         </div>
 
                         <div className="mt-6 w-full">
@@ -249,7 +285,7 @@ export default function EditUser() {
                                 </CardHeader>
                                 <CardContent className="space-y-4">
                                     <div>
-                                        <Label htmlFor="displayName">Name</Label>
+                                        <Label className="mb-3" htmlFor="displayName">Name</Label>
                                         <Input
                                             id="displayName"
                                             value={userData.displayName}
@@ -258,7 +294,7 @@ export default function EditUser() {
                                         />
                                     </div>
                                     <div>
-                                        <Label htmlFor="email">Email</Label>
+                                        <Label className="mb-3" htmlFor="email">Email</Label>
                                         <Input
                                             id="email"
                                             value={userData.email}
@@ -267,7 +303,7 @@ export default function EditUser() {
                                         />
                                     </div>
                                     <div>
-                                        <Label htmlFor="role">Role</Label>
+                                        <Label className="mb-3" htmlFor="role">Role</Label>
                                         <Input
                                             id="role"
                                             value={userData.role}
@@ -276,7 +312,7 @@ export default function EditUser() {
                                         />
                                     </div>
                                     <div>
-                                        <Label htmlFor="bio">Bio</Label>
+                                        <Label className="mb-3" htmlFor="bio">Bio</Label>
                                         <Input
                                             id="bio"
                                             value={userData.bio}
@@ -287,7 +323,7 @@ export default function EditUser() {
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <Label htmlFor="location">Location</Label>
+                                            <Label className="mb-3" htmlFor="location">Location</Label>
                                             <Input
                                                 id="location"
                                                 value={userData.location}
@@ -296,7 +332,7 @@ export default function EditUser() {
                                             />
                                         </div>
                                         <div>
-                                            <Label htmlFor="website">Website</Label>
+                                            <Label className="mb-3" htmlFor="website">Website</Label>
                                             <Input
                                                 id="website"
                                                 value={userData.website}
@@ -307,7 +343,7 @@ export default function EditUser() {
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <Label htmlFor="twitter">Twitter</Label>
+                                            <Label className="mb-3" htmlFor="twitter">Twitter</Label>
                                             <Input
                                                 id="twitter"
                                                 value={userData.twitter}
@@ -316,7 +352,7 @@ export default function EditUser() {
                                             />
                                         </div>
                                         <div>
-                                            <Label htmlFor="linkedin">LinkedIn</Label>
+                                            <Label className="mb-3" htmlFor="linkedin">LinkedIn</Label>
                                             <Input
                                                 id="linkedin"
                                                 value={userData.linkedin}
@@ -327,7 +363,7 @@ export default function EditUser() {
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <Label htmlFor="facebook">Facebook</Label>
+                                            <Label className="mb-3" htmlFor="facebook">Facebook</Label>
                                             <Input
                                                 id="facebook"
                                                 value={userData.facebook}
@@ -336,7 +372,7 @@ export default function EditUser() {
                                             />
                                         </div>
                                         <div>
-                                            <Label htmlFor="instagram">Instagram</Label>
+                                            <Label className="mb-3" htmlFor="instagram">Instagram</Label>
                                             <Input
                                                 id="instagram"
                                                 value={userData.instagram}

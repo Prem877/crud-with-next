@@ -3,6 +3,7 @@
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
+@import "./theme.css";
 
 @theme inline {
   --color-background: var(--background);
@@ -42,6 +43,8 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+
 }
 
 :root {
@@ -77,6 +80,22 @@
   --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
   --sidebar-border: oklch(0.928 0.006 264.531);
   --sidebar-ring: oklch(0.707 0.022 261.325);
+  /* theme colors */
+  --color-neutral-50:oklch(98.5% 0 0);
+  --color-neutral-500:oklch(55.6% 0 0);
+  --color-neutral-600:oklch(43.9% 0 0);
+  --color-blue-50:oklch(97% 0.014 254.604);
+  --color-blue-500:oklch(62.3% 0.214 259.815);
+  --color-blue-600: oklch(54.6% 0.245 262.881);
+  --color-lime-50: oklch(98.6% 0.031 120.757);
+  --color-lime-500: oklch(76.8% 0.233 130.85);
+  --color-lime-600: oklch(64.8% 0.2 131.684);
+  --color-amber-50:oklch(98.7% 0.022 95.277);
+  --color-amber-500:oklch(76.9% 0.188 70.08);
+  --color-amber-600:oklch(66.6% 0.179 58.318);
+  
+
+
 }
 
 .dark {
@@ -117,6 +136,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

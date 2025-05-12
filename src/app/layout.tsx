@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 
 import "@/styles/globals.css"
+import "@/styles/dashboard.css"
 import { cn } from "@/lib/utils"
 import { ActiveThemeProvider } from "@/components/theme-provider/active-theme"
 

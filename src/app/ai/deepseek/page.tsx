@@ -1,23 +1,59 @@
-'use client';
+// app/search/page.tsx
+"use client";
 
-import { useChat } from '@ai-sdk/react';
+import { useState } from "react";
 
-export default function Page() {
-    const { messages, input, handleInputChange, handleSubmit, error } = useChat();
+interface DeepSeekResponse {
+    data: string;
+}
+
+export default function SearchPage() {
+    const [query, setQuery] = useState<string>("");
+    const [results, setResults] = useState<string[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const handleSearch = async () => {
+        if (!query) return;
+        setLoading(true);
+        try {
+            const res = await fetch("/api/deepseek", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: query }),
+            });
+            const { data }: DeepSeekResponse = await res.json();
+            setResults([data]);
+        } catch (error) {
+            console.error("Search failed:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <>
-            {messages.map(message => (
-                <div key={message.id}>
-                    {message.role === 'user' ? 'User: ' : 'AI: '}
-                    {message.reasoning && <pre>{message.reasoning}</pre>}
-                    {message.content}
-                </div>
-            ))}
-            <form onSubmit={handleSubmit}>
-                <input name="prompt" value={input} onChange={handleInputChange} />
-                <button type="submit">Submit</button>
-            </form>
-        </>
+        <div className="p-4">
+            <h1 className="text-2xl font-bold">DeepSeek AI Search</h1>
+            <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Enter your query"
+                className="border p-2 w-full my-2"
+            />
+            <button
+                onClick={handleSearch}
+                disabled={loading}
+                className="bg-blue-500 text-white p-2 rounded"
+            >
+                {loading ? "Searching..." : "Search"}
+            </button>
+            <ul className="mt-4">
+                {results.map((result, index) => (
+                    <li key={index} className="my-2">
+                        <p>{result}</p>
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 }

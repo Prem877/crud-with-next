@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Send } from 'lucide-react';
+import { Menu, Pencil, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // Define the structure of a message part
@@ -177,7 +177,7 @@ export default function ChatPage() {
             <aside className="hidden md:block w-64 bg-card border-r border-border">
                 <div className="p-4">
                     <Button onClick={startNewConversation} className="w-full mb-4">
-                        New Conversation
+                        <Pencil /> New Conversation
                     </Button>
                     <ScrollArea className="h-[calc(100vh-8rem)]">
                         {conversations
@@ -207,8 +207,8 @@ export default function ChatPage() {
                     </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-64 p-4 bg-card border-border">
-                    <Button onClick={startNewConversation} className="w-full mb-4">
-                        New Conversation
+                    <Button onClick={startNewConversation} className="w-full mt-5">
+                        <Pencil /> New Conversation
                     </Button>
                     <ScrollArea className="h-[calc(100vh-8rem)]">
                         {conversations

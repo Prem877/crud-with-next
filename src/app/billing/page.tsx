@@ -32,10 +32,10 @@ const priceIds = {
 
 export default function BillingPage() {
   const [billingInterval, setBillingInterval] = useState("monthly");
-  const [selectedPlan, setSelectedPlan] = useState("starter");
+  const [selectedPlan, setSelectedPlan] = useState<keyof typeof priceIds>("starter");
   const [loading, setLoading] = useState(false);
 
-  const plans = [
+  const plans: { id: "starter" | "pro"; name: string; price: string; description: string; features: string[] }[] = [
     {
       id: "starter",
       name: "Starter",

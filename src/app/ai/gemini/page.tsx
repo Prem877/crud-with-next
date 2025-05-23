@@ -174,7 +174,7 @@ export default function ChatPage() {
     return (
         <div className="flex min-h-screen bg-background text-foreground">
             {/* Sidebar for desktop */}
-            <aside className="hidden md:block w-64 bg-card border-r border-border">
+            <aside className="hidden md:block w-64 border-r border-border">
                 <div className="p-4">
                     <Button onClick={startNewConversation} className="w-full mb-4">
                         <Pencil /> New Conversation

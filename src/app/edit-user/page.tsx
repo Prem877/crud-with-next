@@ -9,11 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
-import { Twitter, Instagram, Linkedin, UserPen } from 'lucide-react';
+import { Twitter, Instagram, Linkedin } from 'lucide-react';
 //img
-import userImg from '@/assets/user.jpg';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 

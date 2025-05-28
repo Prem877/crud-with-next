@@ -4,12 +4,12 @@ import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-async function ensureUser() {
-  // First, try to find an existing user
-  let user = await prisma.user.findFirst();
+// async function ensureUser() {
+//   // First, try to find an existing user
+//   let user = await prisma.user.findFirst();
 
-  return user;
-}
+//   return user;
+// }
 
 export async function createPost(formData: FormData) {
   const title = formData.get("title") as string;
@@ -25,7 +25,9 @@ export async function createPost(formData: FormData) {
 
   try {
     // Ensure we have a user to associate with the post
-    const user = await ensureUser();
+    // const user = await ensureUser();
+    // First, try to find an existing user
+    let user = await prisma.user.findFirst();
     await prisma.post.create({
       data: {
         title,

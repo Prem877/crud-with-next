@@ -27,7 +27,7 @@ export async function createPost(formData: FormData) {
     // Ensure we have a user to associate with the post
     // const user = await ensureUser();
     // First, try to find an existing user
-    let user = await prisma.user.findFirst();
+    const user = await prisma.user.findFirst();
     await prisma.post.create({
       data: {
         title,

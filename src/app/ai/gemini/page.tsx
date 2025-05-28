@@ -45,6 +45,7 @@ export default function ChatPage() {
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+    const [searchQuery, setSearchQuery] = useState<string>('');
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
     // Load conversations from localStorage on mount
@@ -78,6 +79,7 @@ export default function ChatPage() {
         setCurrentConversationId(newConversation.id);
         setMessages([]);
         setIsSidebarOpen(false);
+        setSearchQuery(''); // Clear search when starting new conversation
     };
 
     const loadConversation = (conversationId: string) => {
@@ -171,6 +173,17 @@ export default function ChatPage() {
         }
     };
 
+    // Filter conversations based on search query
+    const filteredConversations = conversations.filter((conv) => {
+        if (!searchQuery.trim()) return true;
+        const query = searchQuery.toLowerCase();
+        const messagesText = conv.messages
+            .map((msg) => msg.parts.map((part) => part.text).join(' '))
+            .join(' ')
+            .toLowerCase();
+        return conv.title.toLowerCase().includes(query) || messagesText.includes(query);
+    });
+
     return (
         <div className="flex min-h-screen bg-background text-foreground">
             {/* Sidebar for desktop */}
@@ -179,22 +192,38 @@ export default function ChatPage() {
                     <Button onClick={startNewConversation} className="w-full mb-4">
                         <Pencil /> New Conversation
                     </Button>
-                    <ScrollArea className="h-[calc(100vh-8rem)]">
-                        {conversations
-                            .sort((a, b) => b.timestamp - a.timestamp)
-                            .map((conv) => (
-                                <Button
-                                    key={conv.id}
-                                    variant={conv.id === currentConversationId ? 'secondary' : 'ghost'}
-                                    className={cn(
-                                        'w-full justify-start mb-2 truncate',
-                                        conv.id === currentConversationId && 'bg-muted'
-                                    )}
-                                    onClick={() => loadConversation(conv.id)}
-                                >
-                                    {conv.title}
-                                </Button>
-                            ))}
+                    
+                    <div className="mb-4">
+                        <Input
+                            type="text"
+                            placeholder="Search conversations..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full bg-background text-foreground border-input focus:ring-ring"
+                        />
+                    </div>
+                    <ScrollArea className="h-[calc(100vh-10rem)]">
+                        {filteredConversations.length === 0 ? (
+                            <div className="text-center text-muted-foreground">
+                                No conversations found.
+                            </div>
+                        ) : (
+                            filteredConversations
+                                .sort((a, b) => b.timestamp - a.timestamp)
+                                .map((conv) => (
+                                    <Button
+                                        key={conv.id}
+                                        variant={conv.id === currentConversationId ? 'secondary' : 'ghost'}
+                                        className={cn(
+                                            'w-full justify-start mb-2 truncate',
+                                            conv.id === currentConversationId && 'bg-muted'
+                                        )}
+                                        onClick={() => loadConversation(conv.id)}
+                                    >
+                                        {conv.title}
+                                    </Button>
+                                ))
+                        )}
                     </ScrollArea>
                 </div>
             </aside>
@@ -210,22 +239,38 @@ export default function ChatPage() {
                     <Button onClick={startNewConversation} className="w-full mt-5">
                         <Pencil /> New Conversation
                     </Button>
-                    <ScrollArea className="h-[calc(100vh-8rem)]">
-                        {conversations
-                            .sort((a, b) => b.timestamp - a.timestamp)
-                            .map((conv) => (
-                                <Button
-                                    key={conv.id}
-                                    variant={conv.id === currentConversationId ? 'secondary' : 'ghost'}
-                                    className={cn(
-                                        'w-full justify-start mb-2 truncate',
-                                        conv.id === currentConversationId && 'bg-muted'
-                                    )}
-                                    onClick={() => loadConversation(conv.id)}
-                                >
-                                    {conv.title}
-                                </Button>
-                            ))}
+
+                    <div className="mb-4">
+                        <Input
+                            type="text"
+                            placeholder="Search conversations..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full bg-background text-foreground border-input focus:ring-ring"
+                        />
+                    </div>
+                    <ScrollArea className="h-[calc(100vh-10rem)]">
+                        {filteredConversations.length === 0 ? (
+                            <div className="text-center text-muted-foreground">
+                                No conversations found.
+                            </div>
+                        ) : (
+                            filteredConversations
+                                .sort((a, b) => b.timestamp - a.timestamp)
+                                .map((conv) => (
+                                    <Button
+                                        key={conv.id}
+                                        variant={conv.id === currentConversationId ? 'secondary' : 'ghost'}
+                                        className={cn(
+                                            'w-full justify-start mb-2 truncate',
+                                            conv.id === currentConversationId && 'bg-muted'
+                                        )}
+                                        onClick={() => loadConversation(conv.id)}
+                                    >
+                                        {conv.title}
+                                    </Button>
+                                ))
+                        )}
                     </ScrollArea>
                 </SheetContent>
             </Sheet>

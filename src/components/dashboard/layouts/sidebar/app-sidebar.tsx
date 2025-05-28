@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import {
+    IconBrandBlogger,
     IconCamera,
-    IconChartBar,
     IconCreditCard,
     IconDashboard,
     IconDatabase,
@@ -52,16 +52,6 @@ const data = {
             icon: IconListDetails,
         },
         {
-            title: "Analytics",
-            url: "#",
-            icon: IconChartBar,
-        },
-        {
-            title: "Projects",
-            url: "#",
-            icon: IconFolder,
-        },
-        {
             title: "Team",
             url: "/my-team",
             icon: IconUsers,
@@ -71,6 +61,17 @@ const data = {
             url: "/billing",
             icon: IconCreditCard,
         },
+        {
+            title: "Blog",
+            url: "/blog",
+            icon: IconBrandBlogger,
+        },
+        {
+            title: "Projects",
+            url: "#",
+            icon: IconFolder,
+        },
+
     ],
     navClouds: [
         {

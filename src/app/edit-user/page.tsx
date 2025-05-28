@@ -17,6 +17,9 @@ import userImg from '@/assets/user.jpg';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Camera } from "lucide-react"
+
 
 export default function EditUser() {
     const router = useRouter();
@@ -209,7 +212,7 @@ export default function EditUser() {
                         </div> */}
 
                         <div className="relative">
-                            {!loading ? (
+                            {/* {!loading ? (
                                 <div className="relative group">
                                     <Image
                                         src={userData.avatarUrl ? userData.avatarUrl : userImg}
@@ -239,7 +242,24 @@ export default function EditUser() {
                                 accept="image/*"
                                 className="hidden"
                                 onChange={handleAvatarUpload}
-                            />
+                            /> */}
+
+                            {!loading ? (
+                                <div className="relative group">
+                                    <Avatar className="w-20 h-20">
+                                        <AvatarImage src={userData.avatarUrl || "/placeholder.svg"} alt="Avatar" />
+                                        <AvatarFallback>U</AvatarFallback>
+                                    </Avatar>
+                                    <Label htmlFor="user-avatar" className="cursor-pointer">
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <Camera className="w-6 h-6 text-white" />
+                                        </div>
+                                    </Label>
+                                </div>
+                            ) : (
+                                <Skeleton className="h-20 w-20 rounded-full" />
+                            )}
+                            <Input id="user-avatar" type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
                         </div>
 
                         <div className="mt-6 w-full">

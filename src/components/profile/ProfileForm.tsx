@@ -13,6 +13,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Skeleton } from '../ui/skeleton';
+import { Camera } from "lucide-react"
 
 interface UserMetadata {
     avatarUrl?: string;
@@ -113,85 +114,130 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
 
     return (
         <>
-            <Card className="max-w-lg mx-auto mt-10 p-6 shadow-md">
-                <CardHeader>
-                    <CardTitle className='flex justify-center items-center' >Edit Profile</CardTitle>
-                </CardHeader>
-                <CardContent>
+            <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+                <Card className="max-w-lg mx-auto shadow-md">
+                    <CardHeader>
+                        <CardTitle className="flex justify-center items-center text-2xl font-bold">Edit Profile</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="relative flex justify-center items-center mb-6">
+                            {!loading ? (
+                                <div className="relative group">
+                                    <Avatar className="w-20 h-20">
+                                        <AvatarImage src={avatarUrl || "/placeholder.svg"} alt="Avatar" />
+                                        <AvatarFallback>U</AvatarFallback>
+                                    </Avatar>
+                                    <Label htmlFor="user-avatar" className="cursor-pointer">
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <Camera className="w-6 h-6 text-white" />
+                                        </div>
+                                    </Label>
+                                </div>
+                            ) : (
+                                <Skeleton className="h-20 w-20 rounded-full" />
+                            )}
+                            <Input id="user-avatar" type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
+                        </div>
 
-                    <div className="relative flex justify-center items-center">
-                        {!loading ? (
-                            <div className="relative group">
-                                <Avatar className="w-20 h-20">
-                                    <AvatarImage src={avatarUrl} alt="Avatar" />
-                                    <AvatarFallback>U</AvatarFallback>
-                                </Avatar>
-                                <Label htmlFor="user-avatar" className="cursor-pointer">
-                                    <div className="absolute inset-0 bottom-0 right-0 p-1">
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="hidden"
-                                        >
-                                            Change Avatar
-                                        </Button>
-                                    </div>
-                                </Label>
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="name">Name</Label>
+                                <Input
+                                    id="name"
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Your name"
+                                    required
+                                />
                             </div>
-                        ) : (
-                            <Skeleton className="h-20 w-20 rounded-full" />
-                        )}
-                        <Input
-                            id="user-avatar"
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            onChange={handleAvatarUpload}
-                        />
-                    </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="twitter">Twitter</Label>
+                                <Input
+                                    id="twitter"
+                                    type="text"
+                                    value={twitter}
+                                    onChange={(e) => setTwitter(e.target.value)}
+                                    placeholder="Twitter handle"
+                                />
+                            </div>
 
-                        <div>
-                            <Label>Name</Label>
-                            <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
-                        </div>
-                        <div>
-                            <Label>Twitter</Label>
-                            <Input type="text" value={twitter} onChange={(e) => setTwitter(e.target.value)} placeholder="Twitter handle" />
-                        </div>
-                        <div>
-                            <Label>GitHub</Label>
-                            <Input type="text" value={github} onChange={(e) => setGithub(e.target.value)} placeholder="GitHub username" />
-                        </div>
-                        <div>
-                            <Label>LinkedIn</Label>
-                            <Input type="text" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} placeholder="LinkedIn profile URL" />
-                        </div>
-                        <div>
-                            <Label>Facebook</Label>
-                            <Input type="text" value={facebook} onChange={(e) => setFacebook(e.target.value)} placeholder="Facebook profile URL" />
-                        </div>
-                        <div>
-                            <Label>Instagram</Label>
-                            <Input type="text" value={instagram} onChange={(e) => setInstagram(e.target.value)} placeholder="Instagram handle" />
-                        </div>
-                        <div>
-                            <Label>Bio</Label>
-                            <Textarea value={bio} onChange={(e) => setBio(e.target.value)} placeholder="Tell us about yourself" />
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <Button variant="outline" type="submit" className="w-auto" disabled={loading}>
-                                {loading ? 'Saving...' : 'Save Profile'}
-                            </Button>
-                            <Button variant="destructive" onClick={() => router.push("/")} className="w-auto" >
-                                Cancel
-                            </Button>
-                        </div>
-                        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-                    </form>
-                </CardContent>
-            </Card>
+                            <div className="space-y-2">
+                                <Label htmlFor="github">GitHub</Label>
+                                <Input
+                                    id="github"
+                                    type="text"
+                                    value={github}
+                                    onChange={(e) => setGithub(e.target.value)}
+                                    placeholder="GitHub username"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="linkedin">LinkedIn</Label>
+                                <Input
+                                    id="linkedin"
+                                    type="url"
+                                    value={linkedin}
+                                    onChange={(e) => setLinkedin(e.target.value)}
+                                    placeholder="LinkedIn profile URL"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="facebook">Facebook</Label>
+                                <Input
+                                    id="facebook"
+                                    type="url"
+                                    value={facebook}
+                                    onChange={(e) => setFacebook(e.target.value)}
+                                    placeholder="Facebook profile URL"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="instagram">Instagram</Label>
+                                <Input
+                                    id="instagram"
+                                    type="text"
+                                    value={instagram}
+                                    onChange={(e) => setInstagram(e.target.value)}
+                                    placeholder="Instagram handle"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="bio">Bio</Label>
+                                <Textarea
+                                    id="bio"
+                                    value={bio}
+                                    onChange={(e) => setBio(e.target.value)}
+                                    placeholder="Tell us about yourself"
+                                    rows={4}
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                                <Button variant="outline" type="submit" className="w-full" disabled={loading}>
+                                    {loading ? "Saving..." : "Save Profile"}
+                                </Button>
+                                <Button
+                                    variant="destructive"
+                                    type="button"
+                                    onClick={() => router.push("/")}
+                                    className="w-full"
+                                    disabled={loading}
+                                >
+                                    Cancel
+                                </Button>
+                            </div>
+
+                            {error && <p className="text-red-500 text-sm mt-2 text-center">{error}</p>}
+                        </form>
+                    </CardContent>
+                </Card>
+            </div>
         </>
     );
 }

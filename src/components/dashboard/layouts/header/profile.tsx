@@ -84,7 +84,7 @@ const Profile = () => {
                 </DropdownMenu>
             ) : (
                 <Button asChild>
-                    <a href="/login">Sign In</a>
+                    <a href="/auth/login">Sign In</a>
                 </Button>
             )}
         </div>

@@ -52,11 +52,6 @@ const data = {
             icon: IconListDetails,
         },
         {
-            title: "Team",
-            url: "/my-team",
-            icon: IconUsers,
-        },
-        {
             title: "Billing",
             url: "/billing",
             icon: IconCreditCard,
@@ -65,6 +60,11 @@ const data = {
             title: "Blog",
             url: "/blog",
             icon: IconBrandBlogger,
+        },
+        {
+            title: "Team",
+            url: "/my-team",
+            icon: IconUsers,
         },
         {
             title: "Projects",

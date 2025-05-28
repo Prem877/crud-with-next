@@ -13,6 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { loadStripe } from "@stripe/stripe-js";
 import { useState } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -92,6 +93,15 @@ export default function BillingPage() {
   return (
     <div className="container mx-auto p-4 max-w-4xl">
       <h1 className="text-2xl font-bold mb-6">Manage your Team Plan</h1>
+      <Select>
+        <SelectTrigger className="w-[180px] mb-6">
+          <SelectValue placeholder="Stripe" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="light">Lemon Squeezy</SelectItem>
+          <SelectItem value="dark">Other</SelectItem>
+        </SelectContent>
+      </Select>
       <p className="text-muted-foreground mb-6">
         Choose a plan that fits your team’s needs. You can upgrade or downgrade
         your plan at any time.

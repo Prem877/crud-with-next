@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { loadStripe } from "@stripe/stripe-js";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { redirect } from "next/navigation";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -32,10 +33,13 @@ const priceIds = {
 };
 
 export default function BillingPage() {
+  const [method, setMethod] = useState("stripe");
   const [billingInterval, setBillingInterval] = useState("monthly");
   const [selectedPlan, setSelectedPlan] = useState<keyof typeof priceIds>("starter");
   const [loading, setLoading] = useState(false);
 
+
+  //for stripe payment method
   const plans: { id: "starter" | "pro"; name: string; price: string; description: string; features: string[] }[] = [
     {
       id: "starter",
@@ -90,16 +94,39 @@ export default function BillingPage() {
     }
   };
 
+  // For Lemon Squeezy or other payment methods, you can implement similar logic
+  // For now, we will just log the selected plan and billing interval
+  const handleSubmitLemonSqueezy = (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true);
+    if (method === "ls" && billingInterval === "monthly" && selectedPlan === "pro") {
+      redirect("https://hencework-sass-starterkit.lemonsqueezy.com/buy/dc9adf3e-bec3-4833-9e46-3fa47ee9f622")
+      // window.location.href = "https://hencework-sass-starterkit.lemonsqueezy.com/buy/dc9adf3e-bec3-4833-9e46-3fa47ee9f622";
+    }
+    else if (method === "ls" && billingInterval === "yearly" && selectedPlan === "pro") {
+      redirect("https://hencework-sass-starterkit.lemonsqueezy.com/buy/e739bca0-141a-46cc-8d62-849dae71508d")
+    }
+    else if (method === "ls" && billingInterval === "monthly" && selectedPlan === "starter") {
+      redirect("https://hencework-sass-starterkit.lemonsqueezy.com/buy/b358daf4-35c0-41b7-ae63-98efbce84c8e")
+    }
+    else if (method === "ls" && billingInterval === "yearly" && selectedPlan === "starter") {
+      redirect("https://hencework-sass-starterkit.lemonsqueezy.com/buy/8edae40b-57cb-45d1-a972-8d5237b096f5")
+    }
+
+    setLoading(false);
+
+  }
+
   return (
     <div className="container mx-auto p-4 max-w-4xl">
       <h1 className="text-2xl font-bold mb-6">Manage your Team Plan</h1>
-      <Select>
+      <Select onValueChange={value => setMethod(value)} defaultValue={method} >
         <SelectTrigger className="w-[180px] mb-6">
           <SelectValue placeholder="Stripe" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="light">Lemon Squeezy</SelectItem>
-          <SelectItem value="dark">Other</SelectItem>
+          <SelectItem value="ls">Lemon Squeezy</SelectItem>
+          <SelectItem value="stripe">Stripe</SelectItem>
         </SelectContent>
       </Select>
       <p className="text-muted-foreground mb-6">
@@ -167,7 +194,7 @@ export default function BillingPage() {
       {/* Proceed to Payment */}
       <div className="mt-6 text-center">
         <Button
-          onClick={handlePayment}
+          onClick={method === "stripe" ? handlePayment : handleSubmitLemonSqueezy}
           className="w-full md:w-auto"
           disabled={loading}
         >
@@ -176,6 +203,9 @@ export default function BillingPage() {
         <p className="text-sm text-muted-foreground mt-2">
           Please note that subscribing won’t refill your tokens, this is for
           demonstration purposes only.
+        </p>
+        <p className="text-sm text-muted-foreground mt-2">
+          For testing purposes only. Please use the Card `4242 4242 4242 4242` with any CVC and valid expiration date.
         </p>
       </div>
     </div>

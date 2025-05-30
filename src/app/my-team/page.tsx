@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
 import { Mail, MoreHorizontal, UserPlus, Users, Crown, Shield, User } from "lucide-react"
+import { sendInvitation } from "./actions"
 
 // Mock data for existing team members
 const mockMembers = [
@@ -76,27 +77,69 @@ export default function MyTeamPage() {
 
         setIsInviting(true)
 
-        // Simulate API call
-        setTimeout(() => {
-            const newMember = {
-                id: Date.now().toString(),
-                name: inviteEmail.split("@")[0],
+        try {
+            // Call the server action to send the invitation
+            const result = await sendInvitation({
                 email: inviteEmail,
                 role: inviteRole as "owner" | "admin" | "member",
-                avatar: "/placeholder.svg?height=40&width=40",
-                joinedAt: new Date().toISOString().split("T")[0],
-                status: "pending" as const,
-            }
-
-            setMembers((prev) => [...prev, newMember])
-            setInviteEmail("")
-            setInviteRole("member")
-            setIsInviting(false)
-
-            toast.success("Invitation sent!", {
-                description: `Invitation sent to ${inviteEmail}`,
+                teamName: "Your Team", // You can make this dynamic if you have team name data
+                inviterName: "Team Admin", // You can use the current user's name here
             })
-        }, 1000)
+
+            if (result.success) {
+                // Add the new member to the UI
+                const newMember = {
+                    id: Date.now().toString(),
+                    name: inviteEmail.split("@")[0],
+                    email: inviteEmail,
+                    role: inviteRole as "owner" | "admin" | "member",
+                    avatar: "/placeholder.svg?height=40&width=40",
+                    joinedAt: new Date().toISOString().split("T")[0],
+                    status: "pending" as const,
+                }
+
+                setMembers((prev) => [...prev, newMember])
+                setInviteEmail("")
+                setInviteRole("member")
+
+                toast.success("Invitation sent!", {
+                    description: `Invitation sent to ${inviteEmail}`,
+                })
+            } else {
+                toast.error("Error sending invitation", {
+                    description: result.error || "Failed to send invitation",
+                })
+            }
+        } catch (error) {
+            toast.error("Error", {
+                description: "An unexpected error occurred",
+            })
+            console.error("Invitation error:", error)
+        } finally {
+            setIsInviting(false)
+        }
+
+        // // Simulate API call
+        // setTimeout(() => {
+        //     const newMember = {
+        //         id: Date.now().toString(),
+        //         name: inviteEmail.split("@")[0],
+        //         email: inviteEmail,
+        //         role: inviteRole as "owner" | "admin" | "member",
+        //         avatar: "/placeholder.svg?height=40&width=40",
+        //         joinedAt: new Date().toISOString().split("T")[0],
+        //         status: "pending" as const,
+        //     }
+
+        //     setMembers((prev) => [...prev, newMember])
+        //     setInviteEmail("")
+        //     setInviteRole("member")
+        //     setIsInviting(false)
+
+        //     toast.success("Invitation sent!", {
+        //         description: `Invitation sent to ${inviteEmail}`,
+        //     })
+        // }, 1000)
     }
 
     const handleRoleChange = (memberId: string, newRole: string) => {
@@ -184,7 +227,7 @@ export default function MyTeamPage() {
                     </CardHeader>
                     <CardContent className="p-0">
                         <div className="divide-y">
-                            {members.map((member, index) => {
+                            {members.map((member) => {
                                 const RoleIcon = roleIcons[member.role as "owner" | "admin" | "member"]
 
                                 return (

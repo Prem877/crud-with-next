@@ -32,14 +32,6 @@ export default function InvitePage() {
         confirmPassword: "",
     })
 
-    useEffect(() => {
-        if (token) {
-            validateToken()
-        } else {
-            setIsValidating(false)
-        }
-    }, [token])
-
     const validateToken = async () => {
         if (!token) return
 
@@ -69,6 +61,16 @@ export default function InvitePage() {
             setIsValidating(false)
         }
     }
+
+    useEffect(() => {
+        if (token) {
+            validateToken()
+        } else {
+            setIsValidating(false)
+        }
+    }, [token, validateToken])
+
+
 
     const handleAcceptInvitation = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -187,7 +189,7 @@ export default function InvitePage() {
                     <Alert className="mb-6">
                         <CheckCircle className="h-4 w-4" />
                         <AlertDescription>
-                            You're being invited to: <strong>{invitationData.email}</strong>
+                            You&apos;re being invited to: <strong>{invitationData.email}</strong>
                         </AlertDescription>
                     </Alert>
 
